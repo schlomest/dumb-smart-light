@@ -15,11 +15,12 @@ void setup() {
   pinMode(powerPin, OUTPUT);
   pinMode(ledPin, OUTPUT);
 
-  digitalWrite(keyPin, HIGH);
+  // set to low to be discoverable
+  // set to high for command mode
+  digitalWrite(keyPin, LOW);
 
   Serial.begin(9600);
   delay(2000);
-  Serial.println("hello there");
   digitalWrite(powerPin, HIGH);
   BluetoothSerial.begin(38400);
 
@@ -27,29 +28,24 @@ void setup() {
 }
 
 void loop() {
-  //  digitalWrite(ledPin, HIGH);
-  //  delay(1000);
-  //  digitalWrite(ledPin, LOW);
-  //  delay(1000);
-
   // read from HC-05 and write to Arduino Serial Monitor
   if (BluetoothSerial.available()) {
-    Serial.println(BluetoothSerial.available());
-    Serial.println("message received");
+//    Serial.println(BluetoothSerial.available());
+//    Serial.println("message received");
 
     char data = BluetoothSerial.read();
 
     // check if char is "O" from the "OK" message
-    if (data == 79) {
-      if (ledState) {
-        Serial.println("turn off");
-        digitalWrite(ledPin, LOW);
-      } else {
-        Serial.println("turn on");
-        digitalWrite(ledPin, HIGH);
-      }
-      ledState = !ledState;
-    }
+//    if (data == 79) {
+//      if (ledState) {
+//        Serial.println("turn off");
+//        digitalWrite(ledPin, LOW);
+//      } else {
+//        Serial.println("turn on");
+//        digitalWrite(ledPin, HIGH);
+//      }
+//      ledState = !ledState;
+//    }
 
     Serial.write(data);
   }
