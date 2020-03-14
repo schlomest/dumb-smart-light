@@ -6,7 +6,7 @@ const byte keyPin = 4;
 const byte powerPin = 5;
 const byte ledPin = 8;
 
-bool ledState = true;
+bool ledState = HIGH;
 
 SoftwareSerial BluetoothSerial(rxPin, txPin);
 
@@ -24,28 +24,28 @@ void setup() {
   digitalWrite(powerPin, HIGH);
   BluetoothSerial.begin(38400);
 
-  digitalWrite(ledPin, HIGH);
+  digitalWrite(ledPin, ledState);
 }
 
 void loop() {
   // read from HC-05 and write to Arduino Serial Monitor
   if (BluetoothSerial.available()) {
-//    Serial.println(BluetoothSerial.available());
-//    Serial.println("message received");
 
     char data = BluetoothSerial.read();
 
-    // check if char is "O" from the "OK" message
-//    if (data == 79) {
-//      if (ledState) {
-//        Serial.println("turn off");
-//        digitalWrite(ledPin, LOW);
-//      } else {
-//        Serial.println("turn on");
-//        digitalWrite(ledPin, HIGH);
-//      }
-//      ledState = !ledState;
-//    }
+    // turn on if 0 is received
+    // turn off if 1 is received
+    if (data == 49 && ledState == LOW) {
+      Serial.println("turn on");
+      ledState = HIGH;
+      digitalWrite(ledPin, ledState);
+    } else if (data == 48 && ledState == HIGH) {
+      Serial.println("turn off");
+      ledState = LOW;
+      digitalWrite(ledPin, ledState);
+    } else {
+      Serial.println("error");
+    }
 
     Serial.write(data);
   }
